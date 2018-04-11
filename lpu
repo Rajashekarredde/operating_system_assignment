@@ -1,0 +1,116 @@
+#include<stdio.h>
+#include<string.h>
+#include<pthread.h>
+#include<semaphore.h>
+pthread_t t1,t2,t3,t4,t5;
+pthread_mutex_t l1,l2;
+int a;
+void *teacher();
+void *comstaff();
+void *student();
+void *login();
+main()
+{
+	
+	    int i;
+        pthread_create(&t1,NULL,login,NULL);
+		pthread_join(t1,NULL);
+}
+void *teacher()
+{   
+	pthread_mutex_lock(&l1);
+	printf("\nTEACHER  IS PLAYING\n");
+	pthread_mutex_unlock(&l1);
+	pthread_exit(NULL);
+}
+void *comstaff()
+{
+	pthread_mutex_lock(&l2);
+	printf("\nSTAFF is PLAYING\n");
+	pthread_mutex_unlock(&l2);
+		pthread_exit(NULL);
+}
+void *student()
+{
+	pthread_mutex_lock(&l1);
+	printf("\nSTUDENT  is PLAYING\n");
+	pthread_mutex_unlock(&l1);
+    	pthread_exit(NULL);
+}
+void *login()
+{
+	float t;
+	sunny:
+printf("\n1. For Faculty\n2. For Student\n3. For ComputerStaff\n4. For Exit\nEnter Your choice :: ");
+scanf("%d",&a);
+
+	if(a==1)
+	{ 
+	 printf(" \n Please Enter the time in 24 : 00 _HoUr Format\n\n");
+	 printf("\nFaculty can play games between 5 P.M and 8 A.M .\n\n Please Enter your Time : ");
+	 scanf("%f",&t);
+	 if(t>=17.00 && t<=24.00)
+	 { 
+	   	printf("\nFaculty Logged In \n");
+		pthread_create(&t3,NULL,teacher,NULL);
+		pthread_join(t3,NULL);
+     }	
+     else if(t>=1.00 && t<=8.00 )
+	 {   
+	    printf("\nFaculty Logged In \n");
+		pthread_create(&t3,NULL,teacher,NULL);
+		pthread_join(t3,NULL);
+     }
+     else
+     {
+     	printf("\nNot a Time for faculty to play games\n");
+	 }
+
+}
+	 else if(a==2)
+	{ 
+	printf(" \n Please Enter the time in 24 : 00 _HoUr Format\n\n");
+	 printf("\n Student can play games between 10 P.M and 6 A.M .\n\n Please Enter your Time : ");
+	 scanf("%f",&t);
+	 if(t>=22.00 && t<=24.00 )
+	 {
+	 	printf("\nStudent  Loged in \n");
+		pthread_create(&t4,NULL,student,NULL);
+		pthread_join(t4,NULL);
+     }
+	 else if(t>=1.00 && t<=6.00 )
+	 {
+	 	printf("\nStudent  Loged in \n");
+	    pthread_create(&t4,NULL,student,NULL);
+		pthread_join(t4,NULL);
+     }	
+     else
+     {
+     	printf("\nNot a Time for student to play games\n");
+	 }
+
+	}
+	
+	else if(a==3)
+	{ 
+	 printf(" \n Please Enter the time in 24 : 00 _HoUr Format\n\n");
+	 printf("\nComputer Staff can play games all the times .\n\n Please Enter your Time : ");
+	 scanf("%f",&t);
+	 if(t>=1.00 && t<=24.00 )
+	 {
+	 	printf("\nComputerStaff Loged in : \n");
+		pthread_create(&t5,NULL,comstaff,NULL);
+		pthread_join(t5,NULL);
+     }	
+     else
+     {
+     	printf("\nPlease Enter Correct Time ");
+	 }
+	}
+	
+	else if(a==4)
+	{
+		pthread_exit(NULL);
+		return 0;
+	}
+	pthread_exit(NULL);}
